@@ -7,4 +7,4 @@ const attachmentSchema = new mongoose.Schema({
   task: { type: mongoose.Schema.Types.ObjectId, ref: 'Task' },
 });
 
-const Attachment = mongoose.model('Attatchment', attachmentSchema);
+export const Attachment = mongoose.model('Attatchment', attachmentSchema);
