@@ -1,12 +1,12 @@
-import { UploadedFile } from 'express-fileupload';
-import { Request, Response, NextFunction } from 'express';
-import catchAsyncErrors from '../middlewares/catchAsyncErrors';
+import { UploadedFile } from "express-fileupload";
+import { Request, Response, NextFunction } from "express";
+import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 
-import cloudinary from 'cloudinary';
-import ErrorHandler from '../utils/errorHandler';
-import sendToken from '../utils/jwtToken';
-import { User } from '../models/user.model';
-import { Api } from '../constants/AppConstant';
+import cloudinary from "cloudinary";
+import ErrorHandler from "../utils/errorHandler";
+import sendToken from "../utils/jwtToken";
+import { User } from "../models/user.model";
+import { Api } from "../constants/AppConstant";
 
 // Abstract factory for file upload
 interface IFileUploader {
@@ -17,9 +17,9 @@ interface IFileUploader {
 export class CloudinaryFileUploader implements IFileUploader {
   async uploadFile(file: UploadedFile): Promise<any> {
     return await cloudinary.v2.uploader.upload(file.tempFilePath, {
-      folder: 'avatars',
+      folder: "avatars",
       width: 150,
-      crop: 'scale',
+      crop: "scale",
     });
   }
 }
@@ -54,9 +54,9 @@ export class LocalFileUploaderFactory implements IFileUploaderFactory {
 // Register controller
 export const register = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log('register route');
-    console.log('BODY', req.body);
-    const image: UploadedFile = req.files?.avatar;
+    console.log("register route");
+    console.log("BODY", req.body);
+    const image: UploadedFile | any = req.files?.avatar;
     const fileUploaderFactory: IFileUploaderFactory =
       new CloudinaryFileUploaderFactory();
     const fileUploader: IFileUploader =
@@ -75,23 +75,23 @@ export const register = catchAsyncErrors(
 export const login = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
-    console.log('login route');
+    console.log("login route");
     // checking if user has given password and email both
 
     if (!email || !password) {
-      return next(new ErrorHandler('Please Enter Email & Password', 400));
+      return next(new ErrorHandler("Please Enter Email & Password", 400));
     }
 
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return next(new ErrorHandler('Invalid email or password', 401));
+      return next(new ErrorHandler("Invalid email or password", 401));
     }
 
     const isPasswordMatched = await user.comparePassword(password);
 
     if (!isPasswordMatched) {
-      return next(new ErrorHandler('Invalid email or password', 401));
+      return next(new ErrorHandler("Invalid email or password", 401));
     }
 
     sendToken(user, Api.SUCCESS, res);

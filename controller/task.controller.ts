@@ -1,17 +1,17 @@
-import { Created, Founded } from './../constants/ApiResponses';
-import { Request, Response, NextFunction } from 'express';
-import { Attachment } from '../models/attatchment.model';
+import { Created, Founded } from "./../constants/ApiResponses";
+import { Request, Response, NextFunction } from "express";
+import { Attachment } from "../models/attatchment.model";
 
-import catchAsyncErrors from '../middlewares/catchAsyncErrors';
-import { Api } from '../constants/AppConstant';
-import { UploadedFile } from 'express-fileupload';
+import catchAsyncErrors from "../middlewares/catchAsyncErrors";
+import { Api } from "../constants/AppConstant";
+import { UploadedFile } from "express-fileupload";
 import {
   IFileUploader,
   IFileUploaderFactory,
-} from '../interfaces/AppInterfaces';
-import Task from '../models/task.model';
-import { CloudinaryFileUploaderFactory } from './user.controller';
-import { IUser } from '../models/user.model';
+} from "../interfaces/AppInterfaces";
+import Task from "../models/task.model";
+import { CloudinaryFileUploaderFactory } from "./user.controller";
+import { IUser } from "../models/user.model";
 
 interface ReqType extends Request {
   user: IUser;
@@ -19,7 +19,7 @@ interface ReqType extends Request {
 }
 
 export const AssignTask = catchAsyncErrors(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request | any, res: Response, next: NextFunction) => {
     const {
       name,
       description,
@@ -35,7 +35,7 @@ export const AssignTask = catchAsyncErrors(
 
     // extract file data from request
     const file = req.files.attachments; // assuming multer middleware is used for file uploads
-    console.log('files', file);
+    console.log("files", file);
 
     const fileUploaderFactory: IFileUploaderFactory =
       new CloudinaryFileUploaderFactory();
@@ -44,7 +44,7 @@ export const AssignTask = catchAsyncErrors(
 
     const attachment = await fileUploader.uploadFile(file);
 
-    console.log('attatchment', attachment.url);
+    console.log("attatchment", attachment.url);
     // create new task document with attachment reference
     const task = new Task({
       name,
@@ -64,7 +64,7 @@ export const AssignTask = catchAsyncErrors(
 
     res.status(Api.CREATED).json({
       status: Api.CREATED,
-      message: Created('Task'),
+      message: Created("Task"),
       data: task,
     });
   }
@@ -76,7 +76,7 @@ export const getAllTasks = catchAsyncErrors(
 
     res.status(Api.SUCCESS).json({
       status: Api.SUCCESS,
-      message: Founded('Tasks'),
+      message: Founded("Tasks"),
       data: Tasks,
     });
   }
@@ -88,11 +88,11 @@ export const getTaskByUser = catchAsyncErrors(
       assignedTo: req.params.id,
     });
 
-    console.log('tasks', Tasks);
+    console.log("tasks", Tasks);
 
     res.status(Api.SUCCESS).json({
       status: Api.SUCCESS,
-      message: Founded('Tasks'),
+      message: Founded("Tasks"),
       data: Tasks,
     });
   }
