@@ -4,7 +4,6 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
-import http from 'http';
 import { ErrorMiddleware } from '../middlewares/error';
 import cookieParser from 'cookie-parser';
 import { userRouter } from '../routes/user.routes';

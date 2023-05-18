@@ -1,4 +1,4 @@
-import { Created } from './../constants/ApiResponses';
+import { Created, Founded } from './../constants/ApiResponses';
 import { Request, Response, NextFunction } from 'express';
 import { Attachment } from '../models/attatchment.model';
 
@@ -11,6 +11,12 @@ import {
 } from '../interfaces/AppInterfaces';
 import Task from '../models/task.model';
 import { CloudinaryFileUploaderFactory } from './user.controller';
+import { IUser } from '../models/user.model';
+
+interface ReqType extends Request {
+  user: IUser;
+  id: string;
+}
 
 export const AssignTask = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -60,6 +66,34 @@ export const AssignTask = catchAsyncErrors(
       status: Api.CREATED,
       message: Created('Task'),
       data: task,
+    });
+  }
+);
+
+export const getAllTasks = catchAsyncErrors(
+  async (req: Request, res: Response) => {
+    const Tasks = await Task.find({});
+
+    res.status(Api.SUCCESS).json({
+      status: Api.SUCCESS,
+      message: Founded('Tasks'),
+      data: Tasks,
+    });
+  }
+);
+
+export const getTaskByUser = catchAsyncErrors(
+  async (req: ReqType, res: Response) => {
+    const Tasks = await Task.find({
+      assignedTo: req.params.id,
+    });
+
+    console.log('tasks', Tasks);
+
+    res.status(Api.SUCCESS).json({
+      status: Api.SUCCESS,
+      message: Founded('Tasks'),
+      data: Tasks,
     });
   }
 );

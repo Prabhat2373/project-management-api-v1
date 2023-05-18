@@ -1,5 +1,9 @@
 import { authorizeRoles, isAuthenticatedUser } from './../middlewares/auth';
-import { AssignTask } from '../controller/task.controller';
+import {
+  AssignTask,
+  getAllTasks,
+  getTaskByUser,
+} from '../controller/task.controller';
 import { createProject } from './../controller/project.controller.';
 import express from 'express';
 
@@ -12,5 +16,8 @@ router
     authorizeRoles('teamLead', 'projectManager'),
     AssignTask
   );
+
+router.get('/tasks', getAllTasks);
+router.get('/tasks/:id', getTaskByUser);
 
 export const taskRouter = router;
