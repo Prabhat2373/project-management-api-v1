@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Created = exports.Updated = exports.Deleted = exports.Founded = void 0;
+var Founded = function (value) { return "".concat(value, " Founded successfully!"); };
+exports.Founded = Founded;
+var Deleted = function (value) { return "".concat(value, " Deleted Successfully!"); };
+exports.Deleted = Deleted;
+var Updated = function (value) { return "".concat(value, " Updated Successfully!"); };
+exports.Updated = Updated;
+var Created = function (value) { return "".concat(value, " Created Successfully!"); };
+exports.Created = Created;
