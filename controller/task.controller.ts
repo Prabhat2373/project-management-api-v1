@@ -73,6 +73,11 @@ export const AssignTask = catchAsyncErrors(
 export const getAllTasks = catchAsyncErrors(
   async (req: Request, res: Response) => {
     const Tasks = await Task.find({});
+    if(!Task) return {
+      status:Api.FAIL,
+      message:
+    };
+
 
     res.status(Api.SUCCESS).json({
       status: Api.SUCCESS,
